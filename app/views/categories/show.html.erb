@@ -1,0 +1,37 @@
+<!-- app/views/categories/show.html.erb -->
+<h1><%= @category.name %></h1>
+
+<div class="filters">
+  <%= form_with url: category_path(@category), method: :get, local: true do |form| %>
+    <div class="form-group">
+      <%= form.label :min_price, "Min Price" %>
+      <%= form.number_field :min_price, value: params[:min_price], class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :max_price, "Max Price" %>
+      <%= form.number_field :max_price, value: params[:max_price], class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :colors, "Colors" %>
+      <%= form.select :colors, options_for_select(Product.distinct.pluck(:colors).flatten, params[:colors]), { include_blank: 'All' }, { class: "form-control" } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :sizes, "Sizes" %>
+      <%= form.select :sizes, options_for_select(Product.distinct.pluck(:sizes).flatten, params[:sizes]), { include_blank: 'All' }, { class: "form-control" } %>
+    </div>
+
+    <%= form.submit "Apply Filters", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="products-list">
+  <% @products.each do |product| %>
+    <div class="product-item">
+      <h3><%= link_to product.name, product_path(product) %></h3>
+      <p><%= number_to_currency(product.price) %></p>
+    </div>
+  <% end %>
+</div>

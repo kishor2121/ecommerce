@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: kishor
+  password: kishor
+
+development:
+  <<: *default
+  database: my2ii
+
+test:
+  <<: *default
+  database: my2ii
+
+production:
+  <<: *default
+  database: my_store_production
+  username: my_store
+  password: <%= ENV['MY_STORE_DATABASE_PASSWORD'] %>

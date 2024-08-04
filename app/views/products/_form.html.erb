@@ -1,0 +1,65 @@
+<%= form_with(model: product, local: true) do |form| %>
+  <% if product.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h4>
+      <ul>
+        <% product.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Create Product</h3>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <%= form.label :name, class: "form-label" %>
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :description, class: "form-label" %>
+          <%= form.text_area :description, class: "form-control", rows: 4 %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :image, class: "form-label" %>
+          <%= form.file_field :image, class: "form-control-file" %>
+        </div>
+
+        <!-- New Category Field -->
+        <div class="form-group">
+          <%= form.label :category_id, class: "form-label" %>
+          <%= form.collection_select :category_id, Category.all, :id, :name, { include_blank: 'Select Category' }, { class: 'form-control' } %>
+        </div>
+
+        <!-- New Subcategory Field -->
+        <div class="form-group">
+          <%= form.label :subcategory_id, class: "form-label" %>
+          <%= form.collection_select :subcategory_id, Subcategory.all, :id, :name, { include_blank: 'Select Subcategory' }, { class: 'form-control' } %>
+        </div>
+
+        <!-- New Colors Field -->
+  <!-- New Colors Field -->
+        <div class="form-group">
+          <%= form.label :colors, class: "form-label" %>
+          <%= form.text_field :colors, class: "form-control", value: (@product.colors || []).join(', ') %>
+        </div>
+
+
+        <div class="form-group">
+          <%= form.label :sizes, class: "form-label" %>
+          <%= form.text_field :sizes, class: "form-control", value: (@product.colors || []).join(', ') %>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <%= form.submit 'Create Product', class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+<% end %>

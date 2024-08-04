@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- Bootstrap CSS -->
+    <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <!-- Font Awesome for Icons -->
+    <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" %>
+
+    <!-- Custom Styles -->
+    <style>
+      .sign-in-container {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        max-width: 400px;
+        margin: auto;
+      }
+
+      .text-primary {
+        color: #007bff;
+      }
+
+      .bg-primary {
+        background-color: #007bff;
+      }
+
+      .bg-primary-dark {
+        background-color: #0056b3;
+      }
+
+      .focus\:ring-primary {
+        --tw-ring-color: #007bff;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .form-actions a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      .form-actions a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sign-in-container mt-5 p-4">
+      <h2 class="text-3xl font-bold mb-6 text-primary text-center">Sign In</h2>
+
+      <%= form_with(scope: :admin, url: admin_session_path, local: true, class: "space-y-4") do |form| %>
+        <div class="form-group">
+          <%= form.label :email, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.email_field :email, class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :password, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.password_field :password, class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" %>
+        </div>
+
+        <div class="form-group form-actions">
+          <div>
+            <%= form.check_box :remember_me, class: "mr-2" %>
+            <%= form.label :remember_me, "Remember me", class: "text-sm font-medium text-gray-700" %>
+          </div>
+          <%= form.submit "Sign In", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+
+      <div class="text-center mt-4">
+        <p>New here? <a href="<%= new_admin_registration_path %>" class="text-primary">Create an account</a></p>
+        <p><a href="<%= new_admin_password_path %>" class="text-primary">Forgot your password?</a></p>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <%= javascript_include_tag "https://code.jquery.com/jquery-3.5.1.slim.min.js" %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" %>
+    <%= javascript_include_tag "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" %>
+  </body>
+</html>
