@@ -7,6 +7,7 @@ class Product < ApplicationRecord
   belongs_to :subcategory
   serialize :colors, JSON
   serialize :sizes, JSON
+  # serialize :variants, Hash
   #  serialize :colors, Array
   # serialize :sizes, Array
 

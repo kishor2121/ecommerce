@@ -4,15 +4,48 @@ class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
 
   # GET /products or /products.json
+  # def index
+  #   # binding.pry
+  #   if params[:query].present?
+  #     @products = Product.search(params[:query])
+  #     Rails.logger.debug { "Search Results: #{@products.to_json}" }
+  #   else
+  #     @products = Product.all.order(created_at: :desc)
+  #   end
+  # end
+
   def index
-    # binding.pry
-    if params[:query].present?
-      @products = Product.search(params[:query])
-      Rails.logger.debug { "Search Results: #{@products.to_json}" }
-    else
-      @products = Product.all.order(created_at: :desc)
-    end
+  @products = Product.all
+
+  if params[:query].present?
+    @products = @products.search(params[:query])
   end
+
+  if params[:category_id].present?
+    @products = @products.where(category_id: params[:category_id])
+  end
+
+  if params[:colors].present?
+    @products = @products.where("colors @> ?", "{#{params[:colors]}}")
+  end
+
+  if params[:sizes].present?
+    @products = @products.where("sizes @> ?", "{#{params[:sizes]}}")
+  end
+
+  if params[:price_min].present?
+    @products = @products.where('price >= ?', params[:price_min])
+  end
+
+  if params[:price_max].present?
+    @products = @products.where('price <= ?', params[:price_max])
+  end
+
+  @products = @products.distinct
+end
+
+  
+  
 
   # GET /products/1 or /products/1.json
   def show
@@ -46,7 +79,7 @@ class ProductsController < ApplicationController
   #   end
   # end
   def create
-    # binding.pry
+    binding.pry
     @product = Product.new(product_params)
     if @product.save
        redirect_to products_path, notice: 'Product was successfully created.'
@@ -88,8 +121,18 @@ class ProductsController < ApplicationController
     # def product_params
     #   params.require(:product).permit(:name, :description, :image, :category_id, :subcategory_id, colors: [], sizes: [])
     # end
+    # def product_params
+    #   # Convert colors and sizes to arrays if they are present
+    #   params[:product][:colors] = params[:product][:colors].split(',') if params[:product][:colors].present?
+    #   params[:product][:sizes] = params[:product][:sizes].split(',') if params[:product][:sizes].present?
+    
+    #   # Permit the parameters
+    #   params.require(:product).permit(:name, :description, :image, :category_id, :subcategory_id, colors: [], sizes: [])
+    # end
     def product_params
-      params.require(:product).permit(:name, :description, :image, :category_id, :subcategory_id, colors: [], sizes: [])
+      params.require(:product).permit(:name, :description, :image, :category_id, :subcategory_id, variants: [:colors, :sizes])
     end
+    
+    
     
 end

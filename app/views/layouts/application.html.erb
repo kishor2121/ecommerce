@@ -71,29 +71,73 @@
       </div>
 
       <!-- Main Header -->
-     <div class="container mt-4">
-  <div class="row align-items-center">
-    <div class="col-md-6">
-      <div style="font-family: 'Courier New', Courier, monospace; white-space: pre;">
-        <pre style="font-size: 18px;">
-        █▀█ █▀█ █▀█ █▀▄ █░█ ▀█▀ █▀▀ █▀ 
-        █▀▀ █▀▄ █▄█ █▄▀ █▄█ ░█░ █▄▄ ▄█
-        Come, relive india
-        </pre>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <%= form_with url: products_path, method: :get, local: true, class: 'input-group' do %>
-        <%= text_field_tag :query, params[:query], class: 'form-control', placeholder: 'Search for products...' %>
-        <div class="input-group-append">
-          <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-            <i class="fas fa-search"></i>
-          <% end %>
+      <div class="container mt-4">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div style="font-family: 'Courier New', Courier, monospace; white-space: pre;">
+              <pre style="font-size: 18px;">
+              █▀█ █▀█ █▀█ █▀▄ █░█ ▀█▀ █▀▀ █▀ 
+              █▀▀ █▀▄ █▄█ █▄▀ █▄█ ░█░ █▄▄ ▄█
+              Come, relive india
+              </pre>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <%= form_with url: products_path, method: :get, local: true, class: 'input-group' do %>
+              <%= text_field_tag :query, params[:query], class: 'form-control', placeholder: 'Search for products...' %>
+              <div class="input-group-append">
+                <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+                  <i class="fas fa-search"></i>
+                <% end %>
+
+                <!-- Filter Button -->
+                <button type="button" class="btn btn-secondary ml-2" data-toggle="modal" data-target="#filterModal">
+                  <i class="fas fa-filter"></i> Filter
+                </button>
+              </div>
+            <% end %>
+          </div>
         </div>
-      <% end %>
-    </div>
-  </div>
-</div>
+      </div>
+
+      <!-- Filter Modal -->
+      <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="filterModalLabel">Filter Products</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <%= form_with url: products_path, method: :get, local: true do |form| %>
+                <div class="form-group">
+                  <%= form.label :category_id, 'Category' %>
+                  <%= form.select :category_id, options_from_collection_for_select(Category.all, :id, :name, params[:category_id]), include_blank: 'All Categories', class: 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :colors, 'Color' %>
+                  <%= form.select :colors, options_for_select(['Red', 'Blue', 'Green', 'Yellow'], params[:colors]), include_blank: 'All Colors', class: 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :sizes, 'Size' %>
+                  <%= form.select :sizes, options_for_select(['Small', 'Medium', 'Large', 'X-Large'], params[:sizes]), include_blank: 'All Sizes', class: 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :price_range, 'Price Range' %>
+                  <%= form.select :price_range, options_for_select([['0 - 500', '0-500'], ['500 - 1000', '500-1000'], ['1000 - 5000', '1000-5000'], ['5000 - 10000', '5000-10000']], params[:price_range]), include_blank: 'All Price Ranges', class: 'form-control' %>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <% end %>
 
